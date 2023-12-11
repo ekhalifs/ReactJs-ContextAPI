@@ -1,9 +1,9 @@
-import React, { Component, createContext } from "react";
+import React, {createContext, useState } from "react";
 
  export const ThemeContext = createContext();
 
-class ThemeContextProvider extends Component{
-    state = {
+const  ThemeContextProvider = ({children})  =>{
+    const [themeState, setTheme] = useState({
         isDarkTheme: true,
         darkTheme: {
             background: 'black',
@@ -13,16 +13,17 @@ class ThemeContextProvider extends Component{
             background:'grey',
             text: 'black'
         }
+    })
+    const onChangeTheme = () => {
+       setTheme({
+        ...themeState,
+        isDarkTheme: !themeState.isDarkTheme,
+       })
     }
-    onChangeTheme = () => {
-        this.setState({isDarkTheme: !this.state.isDarkTheme});
-    }
-    render(){
         return(
-            <ThemeContext.Provider value={{...this.state, onChangeTheme:this.onChangeTheme}}>
-                {this.props.children}
+            <ThemeContext.Provider value={{themeState, onChangeTheme}}>
+                {children}
             </ThemeContext.Provider>
         )
     }
-}
 export default ThemeContextProvider;
